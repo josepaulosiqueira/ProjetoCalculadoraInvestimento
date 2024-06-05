@@ -3,7 +3,7 @@ function convertToMountleyReturnRate(yearlyReturnRate){
 
 }
 
-function generateReturnsArray(
+export function generateReturnsArray(
     startingAmount = 0, 
     timeHorizon = 0, 
     timePeriod ='mounthly', 
@@ -46,8 +46,8 @@ for(let timeReference = 1 ; timeReference <= finalTimeHorizon; timeReference ++)
         totalAmount:totalAmount,
         
 
-    })
+    });
 
 }   
-
+    return returnsArray;
 }
