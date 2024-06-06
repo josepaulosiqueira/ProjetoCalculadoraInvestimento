@@ -6,10 +6,10 @@ function convertToMountleyReturnRate(yearlyReturnRate){
 export function generateReturnsArray(
     startingAmount = 0, 
     timeHorizon = 0, 
-    timePeriod ='mounthly', 
+    timePeriod ='monthly', 
     monthlyContribution = 0, 
     returnRate = 0,
-    returnTimeFrame = 'mounthly'
+    returnTimeFrame = 'monthly'
 )
 {
     if(!timeHorizon ||!startingAmount){
@@ -18,9 +18,9 @@ export function generateReturnsArray(
         throw new Error('Investimento inicial e prazo devem ser preenchidos com valores positivos.');
     }
 
-const finalReturnRate= returnTimeFrame === "mounthly" ? 1 + returnRate /100 : convertToMountleyReturnRate(1 + returnRate /100);
+const finalReturnRate= returnTimeFrame === "monthly" ? 1 + returnRate /100 : convertToMountleyReturnRate(1 + returnRate /100);
 
-const finalTimeHorizon = timePeriod === "mounthly" ? timeHorizon: timeHorizon * 12;
+const finalTimeHorizon = timePeriod === "monthly" ? timeHorizon: timeHorizon * 12;
 
 const referenceInvestmentObject = {
     investedAmount : startingAmount,
