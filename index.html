@@ -7,10 +7,10 @@
     <title>Calculadora de investimentos impressionadora</title>
   </head>
   <body class="h-[100dvh] grid grid-cols-3 grid-rows-2">
-    <aside class="rows-span-2 bg-emerald-300 flex flex-col justify-between py-5 px-2">
+    <aside class="row-span-2 bg-emerald-300 flex flex-col justify-between py-5 px-2">
 
     <h1 class="text-2xl font-bold px-6">Calculadora de investimentos</h1>
-      <form id="investment-form" class="w-full" >
+      <form id="investment-form" class="w-full">
         <div class="flex w-full flex-col px-6 my-2 h-[4.25rem]">
           <label for="starting-amount" class="font-bold text-gray-700">Investimento inicial</label>
           <div class="flex">
@@ -76,17 +76,17 @@
     </div>
     </aside>
     
-    <main class="h-full">
-    <section id="chart-container">
-      <div class="h-[36dvh]">
-        <p> Resultado final</p>
-        <canvas id="final-money-distribution"></canvas>
-      </div>
-      <div  class="h-[56dvh]">
-        <p>Progressão</p> 
-        <canvas id="progression"></canvas>
-      </div>
-    </section>
+    <main class="row-span-2 col-span-2">
+      <!--section id="chart-container" class="h-full flex flex-col">
+        <div class="h-1/2 flex flex-col items-center justify-center pb-10">
+          <p class="font-bold text-lg">Resultado final</p>
+          <canvas id="final-money-distribution"></canvas>
+        </div>
+        <div class="h-1/2 flex flex-col items-center justify-center">
+          <p class="font-bold text-lg">Progressão</p>
+          <canvas id="progression"></canvas>
+        </div>
+      </section-->
     </main>
     <script type="module" src="./main.js"></script>
   </body>

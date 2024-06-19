@@ -137,5 +137,5 @@ for (const formElement of form.elements) {  // Correto
     }
 }
 
-form.addEventListener("submit", renderProgression);
+//form.addEventListener("submit", renderProgression);
 clearFormButton.addEventListener("click", clearForm);
