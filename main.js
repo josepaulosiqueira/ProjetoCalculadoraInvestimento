@@ -1,6 +1,7 @@
 import { Input } from "postcss";
 import { generateReturnsArray } from "./src/investmentGoals";
 import { Chart } from "chart.js/auto";
+import { createTable } from "./src/table";
 
 const finalMoneyChart = document.getElementById("final-money-distribution");
 const progressionChart = document.getElementById("progression");
@@ -10,7 +11,18 @@ const clearFormButton = document.getElementById('clear-form');
 let doughnutChartReference = {};
 let progressionChartReference = {};
 
-function formatCurrency(value) {
+const columnsArray=[
+    {columnLabel :"Mês",accessor: "month"},
+	{columnLabel :"Total Investido",accessor: "investedAmount", format:(numberInfo)=> formatCurrencyToTable(numberInfo)},
+    {columnLabel :"Rendimento Mensal",accessor: "interestReturns", format:(numberInfo)=> formatCurrencyToTable(numberInfo)},
+    {columnLabel :"Rendimento Total",accessor: "totalInterestReturn", format:(numberInfo)=> formatCurrencyToTable(numberInfo)},
+    {columnLabel :"Quantia Total",accessor: "totalAmount", format:(numberInfo)=> formatCurrencyToTable(numberInfo)},
+];
+
+function formatCurrencyToTable(value) {
+    return value.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+}
+function formatCurrencyToGraph(value) {
     return value.toFixed(2);
 }
 
@@ -30,9 +42,9 @@ function renderProgression(evt) {
     const returnRatePeriod = document.getElementById('evaluation-period').value;
     const taxRate = Number(document.getElementById('tax-rate').value.replace(",", "."));
 
-    const returnArray = generateReturnsArray(startingAmount, timeAmount, timeAmountPeriod, additionalContribution, returnRate, returnRatePeriod, taxRate);
+    const returnsArray = generateReturnsArray(startingAmount, timeAmount, timeAmountPeriod, additionalContribution, returnRate, returnRatePeriod, taxRate);
 
-    const finalInvestmentObject = returnArray[returnArray.length - 1];
+    const finalInvestmentObject = returnsArray[returnsArray.length - 1];
 
     doughnutChartReference = new Chart(finalMoneyChart, {
         type: 'doughnut',
@@ -40,9 +52,9 @@ function renderProgression(evt) {
             labels: ["Total investido", "Rendimento", "Imposto"],
             datasets: [{
                 data: [
-                    formatCurrency(finalInvestmentObject.investedAmount),
-                    formatCurrency(finalInvestmentObject.totalInterestReturn * (1 - taxRate / 100)),
-                    formatCurrency(finalInvestmentObject.totalInterestReturn * (taxRate / 100))
+                    formatCurrencyToGraph(finalInvestmentObject.investedAmount),
+                    formatCurrencyToGraph(finalInvestmentObject.totalInterestReturn * (1 - taxRate / 100)),
+                    formatCurrencyToGraph(finalInvestmentObject.totalInterestReturn * (taxRate / 100))
                 ],
                 backgroundColor: [
                     'rgb(255, 99, 132)',
@@ -57,18 +69,18 @@ function renderProgression(evt) {
     progressionChartReference = new Chart(progressionChart, {
         type: 'bar',
         data: {
-            labels: returnArray.map((investmentObject) => investmentObject.month),
+            labels: returnsArray.map((investmentObject) => investmentObject.month),
             datasets: [{
                 label: "Total Investido",
-                data: returnArray.map((investmentObject) =>
-                    formatCurrency(investmentObject.investedAmount)
+                data: returnsArray.map((investmentObject) =>
+                    formatCurrencyToGraph(investmentObject.investedAmount)
                 ),
                 backgroundColor: 'rgb(255, 99, 132)',
             },
             {
                 label: "Retorno do Investimento",
-                data: returnArray.map((investmentObject) =>
-                    formatCurrency(investmentObject.interestReturns)
+                data: returnsArray.map((investmentObject) =>
+                    formatCurrencyToGraph(investmentObject.interestReturns)
                 ),
                 backgroundColor: 'rgb(54, 162, 235)',
             }]
@@ -81,6 +93,7 @@ function renderProgression(evt) {
             }
         }
     });
+    createTable(columnsArray, returnsArray, 'results-table');
 }
 
 function isObjectEmpty(obj) {
@@ -137,5 +150,19 @@ for (const formElement of form.elements) {  // Correto
     }
 }
 
-//form.addEventListener("submit", renderProgression);
+const mainEl = document.querySelector('main');
+const carouselEl = document.getElementById('carousel');
+const nextButton =document.getElementById('slide-arrow-next');
+const previousButton = document.getElementById('slide-arrow-previous');
+
+nextButton.addEventListener('click', () => {
+
+    carouselEl.scrollLeft += mainEl.clientWidth;
+});
+previousButton.addEventListener('click', () => {
+
+    carouselEl.scrollLeft -= mainEl.clientWidth;
+});
+
+form.addEventListener("submit", renderProgression);
 clearFormButton.addEventListener("click", clearForm);
