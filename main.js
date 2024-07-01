@@ -120,7 +120,13 @@ function clearForm() {
         errorInputContainer.classList.remove('error');
         errorInputContainer.parentElement.querySelector('p').remove();
     }
-}
+     // Limpar os elementos da tabela de resultados
+     const resultsTable = document.getElementById('results-table');
+     if (resultsTable) {
+         resultsTable.innerHTML = '';
+     }
+ }
+
 
 function validateInput(evt) {
     if (evt.target.value === '') {
